@@ -69,7 +69,7 @@ The figure below illustrates this behavior using an example.
 ## Command to open the file
 
 ```
-.nano README.md
+nano README.md
 ```
 
 ## TODOs
