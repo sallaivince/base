@@ -71,7 +71,7 @@ The figure below illustrates this behavior using an example.
 ```
 nano README.md
 ```
-
+This is the original text, this shouldn't be overwritten! 
 ## TODOs
 1. *Work on project* (in progress)
 2. Finish project
