@@ -52,6 +52,10 @@ public class TrainControllerImpl implements TrainController {
 		this.step = joystickPosition;
 	}
 
+	public void causeError(){
+		return 1;
+	}
+
 	public void emergencyBrake() {
 		this.timer = new Timer();
 		this.timer.schedule(new TimerTask() {
