@@ -52,8 +52,8 @@ public class TrainControllerImpl implements TrainController {
 		this.step = joystickPosition;
 	}
 
-	public void causeError(){
-		return 1;
+	public boolean isTraingMoving(){
+		return referenceSpeed > 0 ? true : false; 
 	}
 
 	public void emergencyBrake() {
