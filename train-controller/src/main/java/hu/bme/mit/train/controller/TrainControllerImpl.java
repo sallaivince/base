@@ -15,7 +15,7 @@ public class TrainControllerImpl implements TrainController {
 	private Random random;
 
 	public TrainControllerImpl() {
-    thread = new Thread(() -> {
+    Thread thread = new Thread(() -> {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 followSpeed();
