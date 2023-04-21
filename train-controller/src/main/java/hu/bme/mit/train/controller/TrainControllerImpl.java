@@ -15,18 +15,19 @@ public class TrainControllerImpl implements TrainController {
 	private Random random;
 
 	public TrainControllerImpl() {
-		thread = new Thread() {
-			public void run(){
-				thread.run();
-				try {
-					followSpeed();
-					thread.sleep(2000);
-				} catch(InterruptedException e){
-					e.printStackTrace();
-				}
-			}
-		};
-	}
+    thread = new Thread(() -> {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                followSpeed();
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
+    });
+    thread.start();
+}
 
 
 	@Override
