@@ -3,6 +3,9 @@ package hu.bme.mit.train.controller;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import hu.bme.mit.train.interfaces.TrainController;
 
@@ -13,6 +16,13 @@ public class TrainControllerImpl implements TrainController {
 	private int speedLimit = 0;
 	private Timer timer;
 	private Random random;
+
+    public TrainControllerImpl() {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            followSpeed();
+        }, 0, 1, TimeUnit.SECONDS);
+    }
 
 	@Override
 	public void followSpeed() {
@@ -50,6 +60,7 @@ public class TrainControllerImpl implements TrainController {
 	@Override
 	public void setJoystickPosition(int joystickPosition) {
 		this.step = joystickPosition;
+        
 	}
 
 	public boolean isTraingMoving(){
@@ -78,5 +89,4 @@ public class TrainControllerImpl implements TrainController {
 			}
 		}, 1000);
 	}
-
 }
