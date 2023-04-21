@@ -14,6 +14,22 @@ public class TrainControllerImpl implements TrainController {
 	private Timer timer;
 	private Random random;
 
+	public TrainControllerImpl() {
+    Thread thread = new Thread(() -> {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                followSpeed();
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                e.printStackTrace();
+            }
+        }
+    });
+    thread.start();
+}
+
+
 	@Override
 	public void followSpeed() {
 		if (referenceSpeed < 0) {
