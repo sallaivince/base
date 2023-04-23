@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="hu"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrainSensorImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">hu.bme.mit.train.sensor</a> &gt; <a href="index.source.html" class="el_package">hu.bme.mit.train.sensor</a> &gt; <span class="el_source">TrainSensorImpl.java</span></div><h1>TrainSensorImpl.java</h1><pre class="source lang-java linenums">package hu.bme.mit.train.sensor;
+
+import hu.bme.mit.train.interfaces.TrainController;
+import hu.bme.mit.train.interfaces.TrainSensor;
+import hu.bme.mit.train.interfaces.TrainUser;
+
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
+public class TrainSensorImpl implements TrainSensor {
+
+	private TrainController controller;
+	private TrainUser user;
+<span class="fc" id="L17">	private int speedLimit = 5;</span>
+
+	Table&lt;LocalDateTime, Integer, Integer&gt; tachoGraph;
+
+<span class="fc" id="L21">	public TrainSensorImpl(TrainController controller, TrainUser user) {</span>
+<span class="fc" id="L22">		this.controller = controller;</span>
+<span class="fc" id="L23">		this.user = user;</span>
+<span class="fc" id="L24">	}</span>
+
+	@Override
+	public int getSpeedLimit() {
+<span class="nc" id="L28">		return speedLimit;</span>
+	}
+
+	@Override
+	public void overrideSpeedLimit(int speedLimit) {
+<span class="fc" id="L33">		this.speedLimit = speedLimit;</span>
+<span class="fc" id="L34">		controller.setSpeedLimit(speedLimit);</span>
+<span class="fc" id="L35">        alertHighSpeedDifference();</span>
+<span class="fc" id="L36">	}</span>
+
+	@Override
+	public void initTachoGraph() {
+<span class="fc" id="L40">		tachoGraph = HashBasedTable.create();</span>
+<span class="fc" id="L41">	}</span>
+
+	@Override
+	public void appendRowToTachograph(LocalDateTime time, int joystickPosition, int referenceSpeed) {
+<span class="fc" id="L45">		tachoGraph.put(time, joystickPosition, referenceSpeed);</span>
+<span class="fc" id="L46">	}</span>
+
+	public Table&lt;LocalDateTime, Integer, Integer&gt; getTachoGraph() {
+<span class="fc" id="L49">		return tachoGraph;</span>
+	}
+
+    public void alertHighSpeedDifference(){
+        // Absolute boundary
+<span class="fc bfc" id="L54" title="All 4 branches covered.">        if (speedLimit &lt; 0 || speedLimit &gt; 500) {</span>
+<span class="fc" id="L55">            user.setAlarmState(true);</span>
+<span class="fc" id="L56">            return;</span>
+        }
+        // Relative boundary
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (speedLimit &lt; controller.getReferenceSpeed() * 0.5) {</span>
+<span class="fc" id="L60">            user.setAlarmState(true);</span>
+        }
+<span class="fc" id="L62">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

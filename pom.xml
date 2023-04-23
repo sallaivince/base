@@ -45,6 +45,13 @@
     		<artifactId>guava</artifactId>
     		<version>31.1-jre</version>
 		</dependency>
+        <!-- JaCoco for task 3.3 (code coverage) -->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -57,6 +64,26 @@
 					<release>11</release>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                <execution>
+                <id>default-prepare-agent</id>
+                <goals>
+                <goal>prepare-agent</goal>
+                </goals>
+                </execution>
+                <execution>
+                <id>default-report</id>
+                <phase>prepare-package</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+                </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 </project>
