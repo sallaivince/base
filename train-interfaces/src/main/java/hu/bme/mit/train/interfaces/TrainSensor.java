@@ -12,8 +12,8 @@ public interface TrainSensor {
 
 	void initTachoGraph();
 
-	public void appendRowToTachograph(LocalDateTime time, int joystickPosition, int referenceSpeed);
+	void appendRowToTachograph(LocalDateTime time, int joystickPosition, int referenceSpeed);
 
-	public Table<LocalDateTime, Integer, Integer> getTachoGraph();
+	Table<LocalDateTime, Integer, Integer> getTachoGraph();
 
 }

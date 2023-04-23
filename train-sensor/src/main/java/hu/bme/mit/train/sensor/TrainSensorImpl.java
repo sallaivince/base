@@ -32,6 +32,7 @@ public class TrainSensorImpl implements TrainSensor {
 	public void overrideSpeedLimit(int speedLimit) {
 		this.speedLimit = speedLimit;
 		controller.setSpeedLimit(speedLimit);
+        alertHighSpeedDifference();
 	}
 
 	@Override
@@ -47,5 +48,17 @@ public class TrainSensorImpl implements TrainSensor {
 	public Table<LocalDateTime, Integer, Integer> getTachoGraph() {
 		return tachoGraph;
 	}
+
+    public void alertHighSpeedDifference(){
+        // Absolute boundary
+        if (speedLimit < 0 || speedLimit > 500) {
+            user.setAlarmState(true);
+            return;
+        }
+        // Relative boundary
+        if (speedLimit < controller.getReferenceSpeed() * 0.5) {
+            user.setAlarmState(true);
+        }
+    }
 
 }
