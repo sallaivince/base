@@ -3,6 +3,8 @@ package hu.bme.mit.train.controller;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import hu.bme.mit.train.interfaces.TrainController;
 
@@ -13,16 +15,18 @@ public class TrainControllerImpl implements TrainController {
 	private int speedLimit = 0;
 	private Timer timer;
 	private Random random;
+	Logger logger = Logger.getLogger(TrainControllerImpl.class.getName());
+
 
 	public TrainControllerImpl() {
     Thread thread = new Thread(() -> {
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 followSpeed();
-                Thread.sleep(1500);
+               Thread.sleep(1500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
+				logger.log(Level.FINE, "Logging");
             }
         }
     });
@@ -41,7 +45,6 @@ public class TrainControllerImpl implements TrainController {
 				referenceSpeed = 0;
 			}
 		}
-
 		enforceSpeedLimit();
 	}
 
@@ -54,7 +57,6 @@ public class TrainControllerImpl implements TrainController {
 	public void setSpeedLimit(int speedLimit) {
 		this.speedLimit = speedLimit;
 		enforceSpeedLimit();
-
 	}
 
 	private void enforceSpeedLimit() {
