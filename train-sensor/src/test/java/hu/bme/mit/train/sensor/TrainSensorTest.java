@@ -48,4 +48,59 @@ public class TrainSensorTest {
     public void tachographTableLengthTest() {
         Assert.assertEquals(2, trainSensorImpl.getTachoGraph().size());
     }    
+
+    /**
+     * In this partion we are testing the lower boundary.
+     * The first speedLimit is -1, which is 1 unit lower than the boundary.
+     * The second is 0, which is exactly the boundary value.
+     * The third is 1, which is 1 unit higher than the boundary.
+     */
+    @Test 
+    public void alertBottomBoundarySuccess(){
+        trainSensorImpl.overrideSpeedLimit(-1);
+        verify(user).setAlarmState(true);
+        trainSensorImpl.overrideSpeedLimit(0);
+        verify(user).setAlarmState(false);
+        trainSensorImpl.overrideSpeedLimit(1);
+        verify(user, times(2)).setAlarmState(false);
+    }
+
+    /**
+     * In this partion we are testing the upper boundary.
+     * The first speedLimit is 499, which is 1 unit lower than the boundary.
+     * The second is 500, which is exactly the boundary value.
+     * The third is 501, which is 1 unit higher than the boundary.
+     */
+    @Test 
+    public void alertTopBoundarySuccess(){
+        trainSensorImpl.overrideSpeedLimit(501);
+        verify(user).setAlarmState(true);
+        trainSensorImpl.overrideSpeedLimit(500);
+        verify(user).setAlarmState(false);
+        trainSensorImpl.overrideSpeedLimit(499);
+       verify(user, times(2)).setAlarmState(false);
+    }
+
+    /**
+     * In this partion we are testing with a middle value.
+     * The speedLimit is 250, which is between the boundaries.
+     */
+    @Test 
+    public void alertMiddleBoundarySuccess(){
+        trainSensorImpl.overrideSpeedLimit(250);
+        verify(user).setAlarmState(false);
+    }
+
+   
+    /**
+     * In this partion we are testing the relative boundary.
+     * The referenceSpeed is set to 450, the speedLimit is set to 10.
+     */
+    @Test 
+    public void alertRelativeBoundarySuccess(){
+        when(controller.getReferenceSpeed()).thenReturn(450);
+        trainSensorImpl.overrideSpeedLimit(10);
+        verify(user).setAlarmState(true);
+    }
+
 }
